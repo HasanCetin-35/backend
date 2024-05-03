@@ -16,7 +16,7 @@ export class Company {
     @Prop()
     name: string;
 
-    @Prop({ unique: [true, 'Email already exists']})
+    @Prop({ unique: [true, 'Email already exists.']})
     email: string;
 
     @Prop()
