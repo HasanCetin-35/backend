@@ -18,7 +18,7 @@ import { FoodModule } from './food/food.module';
     FoodModule,
     RoleModule,
   ],
-  controllers: [AppController],
+  controllers: [ AppController],
   providers: [AppService],
 })
 export class AppModule {}
