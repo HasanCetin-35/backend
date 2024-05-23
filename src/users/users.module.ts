@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './users.service';
 import { User, UserSchema } from './dtos/users.dto';
 import { IdService } from '../auth/id/id_components';
+import { ExerciseService } from 'src/egzersiz/exercise.service';
 
 
 @Module({
