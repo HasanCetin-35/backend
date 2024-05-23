@@ -4,8 +4,8 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Food extends Document {
-  @Prop()
-  _id:string;
+  @Prop({ type: String, required: true })
+  _id: string;
   @Prop()
   food_name: string;
 

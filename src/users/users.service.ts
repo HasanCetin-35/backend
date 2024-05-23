@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { User } from './dtos/users.dto';
+import { User } from 'src/auth/schemas/user.schema';
 import { IdService } from '../auth/id/id_components';
 import * as bcrypt from 'bcryptjs';
+import { Food } from 'src/food/schema/food.schema';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,35 @@ export class UserService {
     //.exec() kısmı sorguları Promise olarak döndürür.
     //eğer kullanıcı yok ise 'null' değeri döndürmektedir.
      
+    async findById(userId: string): Promise<User> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+      return user;
+    }
+    async getUserFoods(userId: string): Promise<any> {
+      const user = await this.userModel.findById(userId).populate('selectedFood');
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+      return user.selectedFood;
+    }
+
+    async selectFood(userId: string, foodId: string): Promise<void> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+  
+      // Seçilen yiyeceği doğrudan selectedFood dizisine ekle
+      user.selectedFood.push(foodId);
+      await user.save();
+    }
+
+
+
+
     async createUser(createUserDto: User): Promise<any> {
         const createdUser = new this.userModel({
           ...createUserDto,
