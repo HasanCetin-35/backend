@@ -10,6 +10,7 @@ import { RoleModule } from './role/role.module';
 import { IdService } from 'src/auth/id/id_components';
 import { FoodModule } from './food/food.module';
 import { FoodAnalysisModule } from './food_analiz/food_analysis.module';
+import { ExerciseModule } from './egzersiz/exercise.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/Fitness'),
@@ -18,7 +19,8 @@ import { FoodAnalysisModule } from './food_analiz/food_analysis.module';
     UsersModule,
     FoodModule,
     RoleModule,
-    FoodAnalysisModule
+    FoodAnalysisModule,
+    ExerciseModule
   ],
   controllers: [ AppController],
   providers: [AppService],
