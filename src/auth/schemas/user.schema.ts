@@ -1,30 +1,28 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Role } from "src/role/enums/role.enum";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+import { Role } from 'src/role/enums/role.enum';
 
 
-// User sınıfı, User sınıfı, Mongoose için SchemaFactory sınıfını extend eden sınıf.
+export type UserDocument = User & Document;
 
-
-@Schema({  
-    timestamps: true  
-})
+@Schema()
 export class User {
     @Prop({ type: String, required: true })
     _id: string;
-    @Prop()
+    @Prop({ required: true })
     name: string;
 
-    @Prop({ unique: [true, 'Email already exists']})
+    @Prop({ required: true })
     email: string;
 
-    @Prop()
+    @Prop({ required: true })
     password: string;
-
-    //@Prop()
-    //isCompany: boolean;
+    
+    @Prop({type:[String],ref:'Food',default: []})
+    selectedFood:string[]
+    
     @Prop()
     roles: Role[];
-    
-
 }
+
 export const UserSchema = SchemaFactory.createForClass(User);

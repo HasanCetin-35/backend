@@ -33,7 +33,7 @@ export class AuthController {
   }
 
   //Kullanıcı girişi
-  @Post('/login_user')
+  @Get('/login_user')
   login_user(@Body() loginDto: LoginDto): Promise<{ token: String }> {
     return this.authService.login_user(loginDto);
   }

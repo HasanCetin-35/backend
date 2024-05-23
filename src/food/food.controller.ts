@@ -16,7 +16,7 @@ export class FoodController {
   async createFood(@Body() foodDto: FoodDto): Promise<FoodDto> {
     return this.foodService.createFood(foodDto);
   }
-  @Post('/bulk')
+  @Post('/bulk')//toplu besin kayıt işlemi
   async createBulkFoods(@Body() foodDtos: FoodDto[]): Promise<FoodDto[]> {
     return this.foodService.createFoods(foodDtos);
   }
