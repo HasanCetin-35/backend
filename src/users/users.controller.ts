@@ -25,12 +25,31 @@ export class UserController {
   async getUserFoods(@CurrentUser() userId: string): Promise<any> {
     return await this.userService.getUserFoods(userId);
   }
+  @Get('/exercise') // Kullanıcının sahip olduğu yiyecekleri getirmek için GET isteği
+  async getUserExercise(@CurrentUser() userId: string): Promise<any> {
+    return await this.userService.getUserExercise(userId);
+  }
+
+
   @Post('/select-food') // Kullanıcının yiyecek seçtiği POST isteği
   async selectFood(@CurrentUser() userId: string, @Body() body: { foodId: string }): Promise<any> {
     const { foodId } = body;
     try {
       await this.userService.selectFood(userId, foodId);
       return { message: 'Yiyecek başarıyla seçildi.' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('Bir hata oluştu');
+    }
+  }
+  @Post('/select-exercise')
+  async selectExercise(@CurrentUser() userId: string, @Body() body: { exerciseId: string }): Promise<any> {
+    const { exerciseId } = body;
+    try {
+      await this.userService.selectExercise(userId, exerciseId);
+      return { message: 'Egzersiz başarıyla seçildi.' };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);

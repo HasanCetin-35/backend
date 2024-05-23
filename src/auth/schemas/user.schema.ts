@@ -21,6 +21,9 @@ export class User {
     @Prop({type:[String],ref:'Food',default: []})
     selectedFood:string[]
     
+    @Prop({ type: [String], ref: 'Exercise', default: [] })
+    selectedExercise: string[];
+    
     @Prop()
     roles: Role[];
 }

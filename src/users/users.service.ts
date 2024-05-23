@@ -28,6 +28,13 @@ export class UserService {
       }
       return user.selectedFood;
     }
+    async getUserExercise(userId: string): Promise<any> {
+      const user = await this.userModel.findById(userId).populate('selectedExercise');
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+      return user.selectedExercise;
+    }
 
     async selectFood(userId: string, foodId: string): Promise<void> {
       const user = await this.userModel.findById(userId);
@@ -39,6 +46,22 @@ export class UserService {
       user.selectedFood.push(foodId);
       await user.save();
     }
+
+    async selectExercise(userId: string, exerciseId: string): Promise<void> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+  
+      // Seçilen egzersizi doğrudan selectedExercises dizisine ekle
+      user.selectedExercise.push(exerciseId);
+      await user.save();
+    }
+
+
+
+
+
 
 
 
