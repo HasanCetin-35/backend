@@ -34,4 +34,6 @@ export class FoodAnalysisController {
   async getUserNutrition(@CurrentUser() userId: string): Promise<{ protein: number, carbohydrate: number, fat: number }> {
     return this.foodAnalysisService.calculateUserNutrition(userId);
   }
+  //kullanıcı toplam aldığı kalori değerlerini bir arayüzde görebilsin(Hizmetlerim kısmı)
+  //Admin paneli giriş yapınca tüm kullanıların bilgilerini kayıtlarını görebildiği bir arayüz Olsun
 }

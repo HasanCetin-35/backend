@@ -3,8 +3,6 @@ import { Document, Types } from 'mongoose';
 import { Role } from 'src/role/enums/role.enum';
 
 
-export type UserDocument = User & Document;
-
 @Schema()
 export class User {
     @Prop({ type: String, required: true })

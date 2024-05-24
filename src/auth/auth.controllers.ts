@@ -33,11 +33,17 @@ export class AuthController {
   }
 
   //Kullanıcı girişi
-  @Get('/login_user')
+  @Post('/login_user')
   login_user(@Body() loginDto: LoginDto): Promise<{ token: String }> {
     return this.authService.login_user(loginDto);
   }
 
+  @Post('/login_provider')
+  login_provider(
+    @Body() LoginProviderDto: LoginProviderDto,
+  ): Promise<{ token: String }> {
+    return this.authService.login_provider(LoginProviderDto);
+  }
   // @UseGuards(JwtAuthGuard)
   // @Post('/login_user')
   // async login_user(@Request() req) {
@@ -52,12 +58,7 @@ export class AuthController {
     return this.authService.signUp_provider(SignupProviderDto);
   }  
   //Firma girişi
-  @Post('/login_provider')
-  login_provider(
-    @Body() LoginProviderDto: LoginProviderDto,
-  ): Promise<{ token: String }> {
-    return this.authService.login_provider(LoginProviderDto);
-  }
+  
 
   //Kullanıcı bilgilerini id ile getirme.
   @Get('/get-user/:id')
@@ -113,6 +114,10 @@ async getUserOrCompanyByToken(@Headers('Authorization') authHeader: string): Pro
 
   // Eğer ne kullanıcı ne de şirket bulunamazsa, undefined döndür
   return undefined;
+}
+@Patch(":id/update-providerName")
+async update_ProviderName_Service(@Param("id") _id: string, @Body() body: { name: string }) {
+  return this.authService.update_ProviderName(_id, body.name);
 }
 
 
