@@ -2,8 +2,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 import { Role } from "src/role/enums/role.enum";
 
-
-
 // Company sınıfı, Company sınıfı, Mongoose için SchemaFactory sınıfını extend eden sınıf.
 @Schema({  
     timestamps: true  

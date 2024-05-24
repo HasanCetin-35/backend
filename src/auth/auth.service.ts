@@ -155,4 +155,14 @@ export class AuthService {
       throw new UnauthorizedException('Geçersiz veya süresi dolmuş token');
     }
   }
+  async update_ProviderName(
+    _id: string,
+    name: string,
+  ): Promise<Company | undefined> {
+    return await this.userModel.findByIdAndUpdate(
+      _id,
+      { name: name },
+      { new: true },
+    );
+  }
 }
