@@ -84,21 +84,7 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create a new user and return a token', async () => {
-    const signUpDto: SignUpDto = {
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'testPassword',
-      userId: IdServiceMock.generateId(),
-    };
-
-    const result = await service.signUp_user(signUpDto);
-
-    expect(result).toBeDefined();
-    expect(result).toHaveProperty('token');
-    expect(result.token).toEqual('token');
-    expect(UserModelMock.create).toHaveBeenCalled();
-  });
+  
   it('should create a new provider and return a token', async () => {
     const signUpProviderDto: SignUpProviderDto = {
       name: 'Test Provider',

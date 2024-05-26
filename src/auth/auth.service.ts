@@ -59,15 +59,20 @@ export class AuthService {
     // Kullanıcı kaydı
   async signUp_user(signUpDto:SignUpDto):Promise<{token:String}> {
 
-    const{name,email,password} = signUpDto;
+    const{name,email,userType,password} = signUpDto;
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    let roles: RoleIds[];
+    if (userType === 'individual') {
+        roles = [RoleIds.User];
+    } else {
+        roles = [RoleIds.Provider];
+    }
     const user = await this.userModel.create({
       _id: this.idService.generateId(),
       name,
       email,
       password:hashedPassword,
-      roles: [RoleIds.User],
+      roles,
     });
 
 

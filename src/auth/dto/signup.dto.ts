@@ -7,6 +7,8 @@ import {
   IsEnum,
   IsOptional
 } from 'class-validator';
+import { Type } from 'class-transformer';
+import { RoleIds } from 'src/role/enums/role.enum';
 
 // DTO for sign up
 export class SignUpDto {
@@ -27,9 +29,8 @@ export class SignUpDto {
   @IsEnum(['individual', 'company']) // userType'ın alabileceği değerleri belirtin
   userType: string;
   
-  @IsNotEmpty()
-  @IsString()
-  readonly roles: string[];
+  @Type()
+  readonly roles: RoleIds[];
   
   @IsNumber()
   @IsNotEmpty()
