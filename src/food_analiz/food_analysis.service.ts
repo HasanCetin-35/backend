@@ -11,7 +11,8 @@ export class FoodAnalysisService {
   constructor(
     @InjectModel(FoodAnalysis.name) private readonly foodAnalysisModel: Model<FoodAnalysisDocument>,
     private readonly foodService: FoodService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    
   ) { }
 
   async create(createFoodAnalysisDto: CreateFoodAnalysisDto): Promise<FoodAnalysis> {
@@ -27,7 +28,7 @@ export class FoodAnalysisService {
     return this.foodAnalysisModel.find({ user: userId }).populate('food').exec();
   }
 //food analiz kısmı selectedFood dizisi içerisinde ki ürünleri alsın
-async calculateUserNutrition(userId: string): Promise<{ protein: number, carbohydrate: number, fat: number }> {
+async calculateUserNutrition(userId: string): Promise<{ protein: number, carbohydrate: number, fat: number,sugar:number,calorie:number }> {
   // Kullanıcının bilgilerini al
   const user = await this.userService.findById(userId);
   if (!user) {
@@ -37,6 +38,8 @@ async calculateUserNutrition(userId: string): Promise<{ protein: number, carbohy
   let totalProtein = 0;
   let totalCarbohydrate = 0;
   let totalFat = 0;
+  let totalSugar=0;
+  let totalCalorie=0
 
   // Seçili yiyeceklerin kimliklerini al
   const selectedFoods = user.selectedFood;
@@ -53,8 +56,10 @@ async calculateUserNutrition(userId: string): Promise<{ protein: number, carbohy
     totalProtein += food.protein;
     totalCarbohydrate += food.carbohydrate;
     totalFat += food.fat;
+    totalSugar+=food.sugar;
+    totalCalorie+=food.food_calorie;
   }
 
-  return { protein: totalProtein, carbohydrate: totalCarbohydrate, fat: totalFat };
+  return { protein: totalProtein, carbohydrate: totalCarbohydrate, fat: totalFat,sugar:totalSugar, calorie:totalCalorie };
 }
 }

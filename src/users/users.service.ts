@@ -33,6 +33,7 @@ export class UserService {
       if (!user) {
         throw new NotFoundException('Kullanıcı bulunamadı');
       }
+      
       return user.selectedExercise;
     }
 
