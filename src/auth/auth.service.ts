@@ -59,7 +59,7 @@ export class AuthService {
     // Kullanıcı kaydı
   async signUp_user(signUpDto:SignUpDto):Promise<{token:String}> {
 
-    const{name,email,userType,password} = signUpDto;
+    const{name,email,userType,password,weight,height} = signUpDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     let roles: RoleIds[];
     if (userType === 'individual') {
@@ -73,6 +73,8 @@ export class AuthService {
       email,
       password:hashedPassword,
       roles,
+      weight,
+      height,
     });
 
 
@@ -163,11 +165,50 @@ export class AuthService {
   async update_ProviderName(
     _id: string,
     name: string,
-  ): Promise<Company | undefined> {
+  ): Promise<User | undefined> {
     return await this.userModel.findByIdAndUpdate(
       _id,
       { name: name },
       { new: true },
     );
   }
+  async update_ProviderHeight(
+    _id: string,
+    height: number,
+  ): Promise<User | undefined> {
+    return await this.userModel.findByIdAndUpdate(
+      _id,
+      { height: height },
+      { new: true },
+    );
+  }
+  async update_ProviderWeight(
+    _id: string,
+    Weight: number,
+  ): Promise<User | undefined> {
+    return await this.userModel.findByIdAndUpdate(
+      _id,
+      { Weight: Weight },
+      { new: true },
+    );
+  }
+
+
+  
+  async updateProviderInfo(
+    _id: string,
+    updateData: { name?: string, height?: number, weight?: number }
+  ): Promise<User | undefined> {
+    const updatedFields = {};
+    if (updateData.name) updatedFields['name'] = updateData.name;
+    if (updateData.height) updatedFields['height'] = updateData.height;
+    if (updateData.weight) updatedFields['weight'] = updateData.weight;
+  
+    return await this.userModel.findByIdAndUpdate(
+      _id,
+      updatedFields,
+      { new: true }
+    );
+  }
+  
 }

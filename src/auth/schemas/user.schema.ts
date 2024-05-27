@@ -2,11 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Role } from 'src/role/enums/role.enum';
 
-
 @Schema()
-export class User {
+export class User extends Document {
     @Prop({ type: String, required: true })
     _id: string;
+
     @Prop({ required: true })
     name: string;
 
@@ -15,15 +15,21 @@ export class User {
 
     @Prop({ required: true })
     password: string;
-    
-    @Prop({type:[String],ref:'Food',default: []})
-    selectedFood:string[]
-    
+
+    @Prop({ type: [String], ref: 'Food', default: [] })
+    selectedFood: string[];
+
     @Prop({ type: [String], ref: 'Exercise', default: [] })
     selectedExercise: string[];
-    
+
     @Prop()
     roles: Role[];
+
+    @Prop()
+    height: number;
+
+    @Prop()
+    weight: number;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
