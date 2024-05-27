@@ -119,6 +119,21 @@ async getUserOrCompanyByToken(@Headers('Authorization') authHeader: string): Pro
 async update_ProviderName_Service(@Param("id") _id: string, @Body() body: { name: string }) {
   return this.authService.update_ProviderName(_id, body.name);
 }
+@Patch(":id/update-providerHeight")
+async update_ProviderName_Service2(@Param("id") _id: string, @Body() body: { height: number }) {
+  return this.authService.update_ProviderHeight(_id, body.height);
+}
+@Patch(":id/update-providerWeight")
+async update_ProviderName_Service3(@Param("id") _id: string, @Body() body: { weight: number }) {
+  return this.authService.update_ProviderWeight(_id, body.weight);
+}
+@Patch(':id/update-profile')
+  async updateProfile(
+    @Param('id') userId: string,
+    @Body() updateData: { name?: string; height?: number; weight?: number }
+  ): Promise<User | undefined> {
+    return this.authService.updateProviderInfo(userId, updateData);
+  }
 
 
 
