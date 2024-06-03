@@ -36,8 +36,13 @@ export class ExerciseService {
   async findById(id: string): Promise<Exercise> {
     const exercise = await this.exerciseModel.findById(id).exec();
     if (!exercise) {
-      throw new NotFoundException('Egzersiz bulunamadı');
+      throw new NotFoundException('Egzersiz asdabulunamadı');
     }
     return exercise;
   }
+  async findByExerciseName(name: string): Promise<Exercise | null> {
+    return this.exerciseModel.findOne({ egzersiz_adi: name }).exec();
+  }
+
+
 }
