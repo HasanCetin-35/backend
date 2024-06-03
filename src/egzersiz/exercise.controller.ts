@@ -27,4 +27,8 @@ export class ExerciseController {
   async findById(@Param('id') id: string): Promise<Exercise> {
     return this.exerciseService.findById(id);
   }
+  @Get('/name/:name')
+  async findByExerciseName(@Param('name') name: string): Promise<Exercise | null> {
+    return this.exerciseService.findByExerciseName(name);
+  }
 }
