@@ -37,6 +37,10 @@ export class FoodService {
   async findById(foodId: string): Promise<Food | null> {
     return this.foodModel.findById(foodId).exec();
   }
+  async findByFoodName(name: string): Promise<Food | null> {
+    return this.foodModel.findOne({ food_name: name }).exec();
+  }
+
   private convertToDto(food: Food): FoodDto {
     const { _id, food_name, food_calorie, protein, carbohydrate, sugar, fat, category } = food;
     return { _id, food_name, food_calorie, protein, carbohydrate, sugar, fat, category };
