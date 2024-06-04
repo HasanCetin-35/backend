@@ -1,5 +1,5 @@
 // food.controller.ts
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { FoodDto } from './dto/food.dto';
 
@@ -19,5 +19,9 @@ export class FoodController {
   @Post('/bulk')//toplu besin kayıt işlemi
   async createBulkFoods(@Body() foodDtos: FoodDto[]): Promise<FoodDto[]> {
     return this.foodService.createFoods(foodDtos);
+  }
+  @Get(":name")
+  async getNameFood(@Param("name") name:string):Promise<FoodDto>{
+    return this.foodService.findByFoodName(name)
   }
 }
