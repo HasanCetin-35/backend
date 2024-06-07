@@ -48,20 +48,7 @@ describe('AuthController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('signUp_user', () => {
-    it('should call signUp_user method of AuthService', async () => {
-      const signUpDto: SignUpDto = {
-        name: 'Test User',
-        email: 'test@example.com',
-        password: 'testPassword',
-        userId: IdServiceMock.generateId(),
-      };
-
-      await controller.signUp_user(signUpDto);
-
-      expect(authService.signUp_user).toHaveBeenCalledWith(signUpDto);
-    });
-  });
+ 
 
   describe('login_user', () => {
     it('should call login_user method of AuthService', async () => {

@@ -6,7 +6,7 @@ import { ExerciseService } from './exercise.service';
 
 @Controller('exercises')
 export class ExerciseController {
-  constructor(private readonly exerciseService: ExerciseService) {}
+  constructor(private readonly exerciseService: ExerciseService) { }
 
   @Post('/bulk')//toplu egzersiz kayıt için
   async createExercises(@Body() createExerciseDtos: CreateExerciseDto[]): Promise<Exercise[]> {

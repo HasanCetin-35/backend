@@ -8,7 +8,7 @@ import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { Company } from './schemas/providers.schema';
 import { LoginProviderDto } from './dto/login.company.dto';
-import { SignUpProviderDto} from './dto/signup.provider.dto';
+import { SignUpProviderDto } from './dto/signup.provider.dto';
 import { IdService } from './id/id_components';
 import { RoleIds } from '../role/enums/role.enum';
 
@@ -17,7 +17,7 @@ import { RoleIds } from '../role/enums/role.enum';
 @Injectable()
 export class AuthService {
   validateUser(name: string, password: string) {
-      throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
   // AuthService sınıfı, AuthService sınıfı, User ve Company sınıflarının kullanılmasını sağlayan sınıf.
   constructor(
@@ -25,108 +25,108 @@ export class AuthService {
     private userModel: Model<User>,
     private jwtService: JwtService,
     private idService: IdService,
-    
+
     @InjectModel(Company.name)
     private companyModel: Model<Company>
-  ){}
+  ) { }
 
 
 
-  
+
   // Firma kaydı
-  async signUp_provider(SignupProviderDto:SignUpProviderDto):Promise<{token:String}> {
+  async signUp_provider(SignupProviderDto: SignUpProviderDto): Promise<{ token: String }> {
 
-    const{name,email,password,userType,companyName} = SignupProviderDto;
+    const { name, email, password, userType, companyName } = SignupProviderDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     let roles: RoleIds[];
     if (userType === 'individual') {
-        roles = [RoleIds.User];
+      roles = [RoleIds.User];
     } else {
-        roles = [RoleIds.Provider];
+      roles = [RoleIds.Provider];
     }
     const provider = await this.companyModel.create({
       _id: this.idService.generateId(),
       name,
       email,
-      password:hashedPassword,
+      password: hashedPassword,
       companyName,
       roles,
     });
-    const token = this.jwtService.sign({id:provider._id})
+    const token = this.jwtService.sign({ id: provider._id })
 
-    return {token};
+    return { token };
   }
-    // Kullanıcı kaydı
-  async signUp_user(signUpDto:SignUpDto):Promise<{token:String}> {
+  // Kullanıcı kaydı
+  async signUp_user(signUpDto: SignUpDto): Promise<{ token: String }> {
 
-    const{name,email,userType,password,weight,height} = signUpDto;
+    const { name, email, userType, password, weight, height } = signUpDto;
     const hashedPassword = await bcrypt.hash(password, 10);
     let roles: RoleIds[];
     if (userType === 'individual') {
-        roles = [RoleIds.User];
+      roles = [RoleIds.User];
     } else {
-        roles = [RoleIds.Provider];
+      roles = [RoleIds.Provider];
     }
     const user = await this.userModel.create({
       _id: this.idService.generateId(),
       name,
       email,
-      password:hashedPassword,
+      password: hashedPassword,
       roles,
       weight,
       height,
     });
 
 
-    const token = this.jwtService.sign({id:user._id})
+    const token = this.jwtService.sign({ id: user._id })
 
-    return {token};
+    return { token };
   }
 
   // Kullanıcı girişi
-  async login_user(LoginProviderDto: LoginProviderDto): Promise<{token:String}> {
-    const{email,password} = LoginProviderDto;
+  async login_user(LoginProviderDto: LoginProviderDto): Promise<{ token: String }> {
+    const { email, password } = LoginProviderDto;
 
-    const user = await this.userModel.findOne({email})
+    const user = await this.userModel.findOne({ email })
 
-    if(!user){
+    if (!user) {
       console.log("here");
       throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password);
-    
-    if(!isPasswordMatched){
+
+    if (!isPasswordMatched) {
       console.log("here1");
       throw new UnauthorizedException('Invalid email or password');
     }
     console.log("burda");
-    const token = this.jwtService.sign({id:user._id})
-    
-    
-    return {token};
+    const token = this.jwtService.sign({ id: user._id })
+
+
+    return { token };
   }
 
-  
+
   // Firma girişi
-  async login_provider(loginDto:LoginDto): Promise<{token:String}> {
-    const{email,password} = loginDto;
+  async login_provider(loginDto: LoginDto): Promise<{ token: String }> {
+    const { email, password } = loginDto;
 
-    const provider = await this.companyModel.findOne({email})
+    const provider = await this.companyModel.findOne({ email })
 
-    if(!provider){
+    if (!provider) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordMatched = await bcrypt.compare(password, provider.password);
-    
-    if(!isPasswordMatched){
+
+    if (!isPasswordMatched) {
       throw new UnauthorizedException('Invalid email or password');
     }
-    
-    const token = this.jwtService.sign({id:provider._id})
-    
-    return {token};
+
+    const token = this.jwtService.sign({ id: provider._id })
+
+    return { token };
   }
 
   // Kullanıcı bilgilerini id ile getirme.
@@ -194,21 +194,23 @@ export class AuthService {
   }
 
 
-  
+
   async updateProviderInfo(
     _id: string,
-    updateData: { name?: string, height?: number, weight?: number }
+    updateData: { name?: string, height?: number, weight?: number, target?: string, gender?: string, age?: number }
   ): Promise<User | undefined> {
     const updatedFields = {};
     if (updateData.name) updatedFields['name'] = updateData.name;
     if (updateData.height) updatedFields['height'] = updateData.height;
     if (updateData.weight) updatedFields['weight'] = updateData.weight;
-  
+    if (updateData.target) updatedFields['target'] = updateData.target;
+    if (updateData.gender) updatedFields['gender'] = updateData.gender;
+    if (updateData.age) updatedFields['age'] = updateData.age;
     return await this.userModel.findByIdAndUpdate(
       _id,
       updatedFields,
       { new: true }
     );
   }
-  
+
 }

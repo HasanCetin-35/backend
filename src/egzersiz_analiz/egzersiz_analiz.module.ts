@@ -9,10 +9,12 @@ import { ExerciseService } from 'src/egzersiz/exercise.service';
 import { Exercise, ExerciseSchema } from 'src/egzersiz/schema/exercise.schema';
 import { User, UserSchema } from 'src/auth/schemas/user.schema';
 import { IdService } from 'src/auth/id/id_components';
+import { FoodSchema } from 'src/food/schema/food.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: ExerciseAnalysis.name, schema: ExerciseAnalysisSchema },{ name: Exercise.name, schema: ExerciseSchema }, // FoodSchema eklendi
-    {name:User.name,schema:UserSchema}])
+    {name:User.name,schema:UserSchema}]),
+    MongooseModule.forFeature([{ name: 'Food', schema: FoodSchema }])
   ],
   controllers: [ExerciseAnalysisController],
   providers: [ExerciseAnalysisService, ExerciseService, UserService,IdService],

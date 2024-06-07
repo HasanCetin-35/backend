@@ -30,6 +30,19 @@ export class User extends Document {
 
     @Prop()
     weight: number;
+
+    @Prop()
+    target: string;
+    @Prop()
+    gender: string;
+    @Prop()
+    age: number;
+
+    @Prop()
+    targetFood: string[];
+    @Prop()
+    targetExercises: string[];
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

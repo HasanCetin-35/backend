@@ -5,10 +5,15 @@ import { User } from 'src/auth/schemas/user.schema';
 import { IdService } from '../auth/id/id_components';
 import * as bcrypt from 'bcryptjs';
 import { Food } from 'src/food/schema/food.schema';
+import { FoodService } from 'src/food/food.service';
+
 
 @Injectable()
 export class UserService {
-    constructor(@InjectModel(User.name) private readonly userModel: Model<User>, private readonly idService: IdService) { }
+    constructor(@InjectModel(User.name) 
+    private  userModel: Model<User>, 
+    private  idService: IdService,
+    @InjectModel(Food.name) private  foodModel: Model<Food>) { }
 
     // Kullanıcıyı ID'ye göre bulma kısmı 
     //.exec() kısmı sorguları Promise olarak döndürür.
@@ -28,6 +33,7 @@ export class UserService {
       }
       return user.selectedFood;
     }
+
     async getUserExercise(userId: string): Promise<any> {
       const user = await this.userModel.findById(userId).populate('selectedExercise');
       if (!user) {
@@ -59,6 +65,37 @@ export class UserService {
       await user.save();
     }
 
+    async targetFood(userId: string, foodname: string): Promise<any> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+  
+      // Yiyecek bilgisini veritabanından al
+      const food = await this.foodModel.findOne({ food_name: foodname });
+      if (!food) {
+        throw new NotFoundException('Yiyecek bulunamadı');
+      }
+  
+      user.targetFood.push(food._id);
+      await user.save();
+    }
+    async getTargetFoods(userId: string): Promise<string[] | null> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user.targetFood;
+    }
+  
+    async getTargetExercises(userId: string): Promise<string[] | null> {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user.targetExercises;
+    }
+    
 
 
 
