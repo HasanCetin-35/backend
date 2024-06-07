@@ -30,6 +30,19 @@ export class UserController {
     return await this.userService.getUserExercise(userId);
   }
 
+  @Post('/target-food')
+  async targetFood(@CurrentUser() userId:string,@Body() body:{foodName: string }):Promise<any>{
+    const { foodName } = body;
+    try{
+      await this.userService.targetFood(userId,foodName)
+      return { message: 'Yiyecek başarıyla hedefe kayıt edildi seçildi.' };
+    }catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('Bir hata oluştu');
+    }
+  }
 
   @Post('/select-food') // Kullanıcının yiyecek seçtiği POST isteği
   async selectFood(@CurrentUser() userId: string, @Body() body: { foodId: string }): Promise<any> {
@@ -57,6 +70,16 @@ export class UserController {
       throw new NotFoundException('Bir hata oluştu');
     }
   }
+  @Get('target-food')
+  async getTargetFoods(@CurrentUser() userId: string): Promise<string[] | null> {
+    return this.userService.getTargetFoods(userId);
+  }
+
+  @Get('/target-exercises')
+  async getTargetExercises(@CurrentUser() userId: string): Promise<string[] | null> {
+    return this.userService.getTargetExercises(userId);
+  }
+  
 
 
 
