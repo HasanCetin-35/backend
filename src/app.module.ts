@@ -13,6 +13,7 @@ import { FoodAnalysisModule } from './food_analiz/food_analysis.module';
 import { ExerciseModule } from './egzersiz/exercise.module';
 import { ExerciseAnalysisModule } from './egzersiz_analiz/egzersiz_analiz.module';
 import { FoodTargetModule } from './foodtarget/foodtarget.module';
+import { ExerciseTargetModule } from './egzersiztarget/egzersiztarget.module';
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/Fitness'),
@@ -23,6 +24,7 @@ import { FoodTargetModule } from './foodtarget/foodtarget.module';
     FoodTargetModule,
     RoleModule,
     FoodAnalysisModule,
+    ExerciseTargetModule,
     ExerciseAnalysisModule,
     ExerciseModule
   ],
