@@ -31,6 +31,12 @@ export class UserController {
   async getTargetFoods(@CurrentUser() userId:string):Promise<any>{
     return await this.userService.getTargetFood(userId)
   }
+  @Get('get_targetExercises')
+  async getTargetExercise(@CurrentUser() userId:string):Promise<any>{
+    return await this.userService.getTargetExercise(userId)
+  }
+
+
   @Get('/exercise') // Kullanıcının sahip olduğu yiyecekleri getirmek için GET isteği
   async getUserExercise(@CurrentUser() userId: string): Promise<any> {
     return await this.userService.getUserExercise(userId);
@@ -42,6 +48,20 @@ export class UserController {
     try{
       await this.userService.targetFood(userId,foodName)
       return { message: 'Yiyecek başarıyla hedefe kayıt edildi seçildi.' };
+    }catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new NotFoundException('Bir hata oluştu');
+    }
+  }
+
+  @Post('/target-exercise')
+  async targetExercise(@CurrentUser() userId:string,@Body() body:{exerciseName: string }):Promise<any>{
+    const { exerciseName } = body;
+    try{
+      await this.userService.targetExercise(userId,exerciseName)
+      return { message: 'Egzersiz başarıyla hedefe kayıt edildi seçildi.' };
     }catch (error) {
       if (error instanceof NotFoundException) {
         throw new NotFoundException(error.message);
@@ -78,10 +98,6 @@ export class UserController {
   }
 
 
-  @Get('/target-exercises')
-  async getTargetExercises(@CurrentUser() userId: string): Promise<string[] | null> {
-    return this.userService.getTargetExercises(userId);
-  }
   
 
 

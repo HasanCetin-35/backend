@@ -10,6 +10,8 @@ import { IdService } from 'src/auth/id/id_components';
 import { CompanySchema } from 'src/auth/schemas/providers.schema';
 import { FoodSchema } from 'src/food/schema/food.schema';
 import { FoodTargetSchema } from 'src/foodtarget/schema/foodtarget.schema'; 
+import { ExerciseTargetSchema } from 'src/egzersiztarget/schema/egzersiztarget.schema';
+import { ExerciseSchema } from 'src/egzersiz/schema/exercise.schema';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { FoodTargetSchema } from 'src/foodtarget/schema/foodtarget.schema';
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     MongooseModule.forFeature([{ name: 'Company', schema: CompanySchema }]),
     MongooseModule.forFeature([{ name: 'Food', schema: FoodSchema }]),
-    MongooseModule.forFeature([{ name: 'FoodTarget', schema: FoodTargetSchema }])
+    MongooseModule.forFeature([{ name: 'FoodTarget', schema: FoodTargetSchema }]),
+    MongooseModule.forFeature([{ name: 'ExerciseTarget', schema: ExerciseTargetSchema }]),
+    MongooseModule.forFeature([{ name: 'Exercise', schema: ExerciseSchema }])
   ],
   providers: [RoleService, AuthService, UserService, IdService, JwtService],
   exports: [RoleService, IdService, UserService],

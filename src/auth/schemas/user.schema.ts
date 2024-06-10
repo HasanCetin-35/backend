@@ -40,7 +40,7 @@ export class User extends Document {
 
     @Prop({ type: [String], ref: 'Food' })
     targetFood: string[];
-    @Prop()
+    @Prop({ type: [String], ref: 'Exercise' })
     targetExercises: string[];
 
 }

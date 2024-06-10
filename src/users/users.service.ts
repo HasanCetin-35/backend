@@ -5,16 +5,18 @@ import { User } from 'src/auth/schemas/user.schema';
 import { IdService } from '../auth/id/id_components';
 import * as bcrypt from 'bcryptjs';
 import { Food } from 'src/food/schema/food.schema';
-import { FoodService } from 'src/food/food.service';
 import { FoodTarget } from 'src/foodtarget/schema/foodtarget.schema'; 
-
+import { Exercise } from 'src/egzersiz/schema/exercise.schema';
 
 @Injectable()
 export class UserService {
     constructor(@InjectModel(User.name) 
     private  userModel: Model<User>, 
     private  idService: IdService,
-    @InjectModel(Food.name) private  foodModel: Model<Food>,@InjectModel(FoodTarget.name) private readonly foodTargetModel: Model<FoodTarget>) { }
+    @InjectModel(Exercise.name) private  exerciseModel: Model<Exercise>,
+    @InjectModel(Food.name) private  foodModel: Model<Food>,@InjectModel(FoodTarget.name) private readonly foodTargetModel: Model<FoodTarget>,
+  
+  ) { }
 
     // Kullanıcıyı ID'ye göre bulma kısmı 
     //.exec() kısmı sorguları Promise olarak döndürür.
@@ -40,6 +42,13 @@ export class UserService {
         throw new NotFoundException('Kullanıcı bulunamadı');
       }
       return user.targetFood;
+    }
+    async getTargetExercise(userId: string): Promise<any> {
+      const user = await this.userModel.findById(userId).populate('targetExercises');
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+      return user.targetExercises;
     }
 
     
@@ -89,19 +98,18 @@ export class UserService {
       user.targetFood.push(food._id);
       await user.save();
     }
-
-  
-    async getTargetExercises(userId: string): Promise<string[] | null> {
-      const user = await this.userModel.findById(userId);
+    async targetExercise(userId:string,exercisename:string):Promise<any>{
+      const user =await this.userModel.findById(userId)
       if (!user) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('Kullanıcı bulunamadı');
       }
-      return user.targetExercises;
+      const exercise = await this.exerciseModel.findOne({egzersiz_adi:exercisename})
+      if (!exercise) {
+        throw new NotFoundException('Egzersiz bulunamadı');
+      }
+      user.targetExercises.push(exercise._id)
+      await user.save()  
     }
-    
-
-
-
 
 
 
