@@ -6,6 +6,7 @@ import { IdService } from '../auth/id/id_components';
 import * as bcrypt from 'bcryptjs';
 import { Food } from 'src/food/schema/food.schema';
 import { FoodService } from 'src/food/food.service';
+import { FoodTarget } from 'src/foodtarget/schema/foodtarget.schema'; 
 
 
 @Injectable()
@@ -13,7 +14,7 @@ export class UserService {
     constructor(@InjectModel(User.name) 
     private  userModel: Model<User>, 
     private  idService: IdService,
-    @InjectModel(Food.name) private  foodModel: Model<Food>) { }
+    @InjectModel(Food.name) private  foodModel: Model<Food>,@InjectModel(FoodTarget.name) private readonly foodTargetModel: Model<FoodTarget>) { }
 
     // Kullanıcıyı ID'ye göre bulma kısmı 
     //.exec() kısmı sorguları Promise olarak döndürür.
@@ -33,7 +34,15 @@ export class UserService {
       }
       return user.selectedFood;
     }
+    async getTargetFood(userId: string): Promise<any> {
+      const user = await this.userModel.findById(userId).populate('targetFood');
+      if (!user) {
+        throw new NotFoundException('Kullanıcı bulunamadı');
+      }
+      return user.targetFood;
+    }
 
+    
     async getUserExercise(userId: string): Promise<any> {
       const user = await this.userModel.findById(userId).populate('selectedExercise');
       if (!user) {
@@ -80,13 +89,7 @@ export class UserService {
       user.targetFood.push(food._id);
       await user.save();
     }
-    async getTargetFoods(userId: string): Promise<string[] | null> {
-      const user = await this.userModel.findById(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      return user.targetFood;
-    }
+
   
     async getTargetExercises(userId: string): Promise<string[] | null> {
       const user = await this.userModel.findById(userId);

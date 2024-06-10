@@ -38,7 +38,7 @@ export class User extends Document {
     @Prop()
     age: number;
 
-    @Prop()
+    @Prop({ type: [String], ref: 'Food' })
     targetFood: string[];
     @Prop()
     targetExercises: string[];
