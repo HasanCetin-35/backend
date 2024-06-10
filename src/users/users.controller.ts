@@ -25,6 +25,12 @@ export class UserController {
   async getUserFoods(@CurrentUser() userId: string): Promise<any> {
     return await this.userService.getUserFoods(userId);
   }
+
+
+  @Get('get_targetFoods')
+  async getTargetFoods(@CurrentUser() userId:string):Promise<any>{
+    return await this.userService.getTargetFood(userId)
+  }
   @Get('/exercise') // Kullanıcının sahip olduğu yiyecekleri getirmek için GET isteği
   async getUserExercise(@CurrentUser() userId: string): Promise<any> {
     return await this.userService.getUserExercise(userId);
@@ -70,10 +76,7 @@ export class UserController {
       throw new NotFoundException('Bir hata oluştu');
     }
   }
-  @Get('target-food')
-  async getTargetFoods(@CurrentUser() userId: string): Promise<string[] | null> {
-    return this.userService.getTargetFoods(userId);
-  }
+
 
   @Get('/target-exercises')
   async getTargetExercises(@CurrentUser() userId: string): Promise<string[] | null> {
