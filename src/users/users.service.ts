@@ -94,7 +94,9 @@ export class UserService {
       if (!food) {
         throw new NotFoundException('Yiyecek bulunamadı');
       }
-  
+      if (user.targetFood.length >= 16) {
+        throw new BadRequestException('Hedeflenen Besinlerin maksimum sayısı aşıldı');
+      }
       user.targetFood.push(food._id);
       await user.save();
     }
@@ -106,6 +108,9 @@ export class UserService {
       const exercise = await this.exerciseModel.findOne({egzersiz_adi:exercisename})
       if (!exercise) {
         throw new NotFoundException('Egzersiz bulunamadı');
+      }
+      if (user.targetExercises.length >= 3) {
+        throw new BadRequestException('Hedeflenen egzersizlerin maksimum sayısı aşıldı');
       }
       user.targetExercises.push(exercise._id)
       await user.save()  
