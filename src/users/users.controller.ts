@@ -49,10 +49,7 @@ export class UserController {
       await this.userService.targetFood(userId,foodName)
       return { message: 'Yiyecek başarıyla hedefe kayıt edildi seçildi.' };
     }catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw new NotFoundException('Bir hata oluştu');
+      return {message:"Hedefiniz zaten mevcut."}
     }
   }
 
@@ -63,10 +60,8 @@ export class UserController {
       await this.userService.targetExercise(userId,exerciseName)
       return { message: 'Egzersiz başarıyla hedefe kayıt edildi seçildi.' };
     }catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new NotFoundException(error.message);
-      }
-      throw new NotFoundException('Bir hata oluştu');
+      return {message:"Hedefiniz zaten mevcut."}
+      
     }
   }
 
