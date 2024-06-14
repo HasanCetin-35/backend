@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User } from 'src/auth/schemas/user.schema';
@@ -100,20 +100,27 @@ export class UserService {
       user.targetFood.push(food._id);
       await user.save();
     }
-    async targetExercise(userId:string,exercisename:string):Promise<any>{
-      const user =await this.userModel.findById(userId)
+    async targetExercise(userId: string, exercisename: string): Promise<any> {
+      const user = await this.userModel.findById(userId);
       if (!user) {
         throw new NotFoundException('Kullanıcı bulunamadı');
       }
-      const exercise = await this.exerciseModel.findOne({egzersiz_adi:exercisename})
+    
+      const exercise = await this.exerciseModel.findOne({ egzersiz_adi: exercisename });
       if (!exercise) {
         throw new NotFoundException('Egzersiz bulunamadı');
       }
+    
+      if (user.targetExercises.includes(exercise._id)) {
+        throw new ConflictException('Egzersiz zaten mevcut');
+      }
+    
       if (user.targetExercises.length >= 3) {
         throw new BadRequestException('Hedeflenen egzersizlerin maksimum sayısı aşıldı');
       }
-      user.targetExercises.push(exercise._id)
-      await user.save()  
+    
+      user.targetExercises.push(exercise._id);
+      await user.save();
     }
 
 
